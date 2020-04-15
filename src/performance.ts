@@ -19,13 +19,17 @@ const TIMING_KEYS = [
   /* 12 */ 'domContentLoadedEventEnd',
   /* 13 */ 'domCompleted', // domCompleted 未使用
   /* 14 */ 'loadEventStart',
-  /* 15 */ 'loadEventEnd' // loadEventEnd 未使用
+  /* 15 */ 'loadEventEnd', // loadEventEnd 未使用
+  /* 16 */ 'msFirstPaint', // IE9 专有属性，用于计算 fpt
+  /* 17 */ 'secureConnectionStart' // 用于计算 SSL 连接耗时
+
 ];
 
 export default class Performance {
   public active() {
     if (utils.isSuportPerformance()) {
       let perfData = this.getPerformanceData();
+      console.log('perfData', perfData)
     }
   }
 
@@ -114,24 +118,21 @@ export default class Performance {
        */
       load: [14, 1]
     };
-    let perfData = {}
-    // tslint:disable-next-line: deprecation
+    let perfData: any = {}
     let timing = window.performance.timing || {}
 
     each(datas, (value, key) => {
       let beginTimeKey: keyof PerformanceTiming = TIMING_KEYS[value[1]] as any
       let endTimeKey: keyof PerformanceTiming = TIMING_KEYS[value[0]] as any
 
-      let begin = timing[beginTimeKey]
-      let end = timing[endTimeKey]
-
-      // if (value === 2 || (begin > 0 && end > 0)) {
-      //   var cost = Math.round(end - begin);
-      //   // 脏数据过滤: 耗时大于 0 并且小于 1 小时 (1e3 * 3600)
-      //   if (cost >= 0 && cost < 3600 * 1e3) {
-      //     perfData[k] = cost;
-      //   }
-      // }
+      let begin = timing[beginTimeKey] as number
+      let end = timing[endTimeKey] as number
+      if (begin> 0 && end>0) {
+        const cost:number = Math.round(end - begin);
+        if (cost >= 0 && cost < 3600 * 1e3) {
+          perfData[key] = cost;
+        }
+      }
     })
     return perfData
   }

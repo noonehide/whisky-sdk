@@ -22,7 +22,6 @@ const TIMING_KEYS = [
   /* 15 */ 'loadEventEnd', // loadEventEnd 未使用
   /* 16 */ 'msFirstPaint', // IE9 专有属性，用于计算 fpt
   /* 17 */ 'secureConnectionStart' // 用于计算 SSL 连接耗时
-
 ];
 
 export default class Performance {

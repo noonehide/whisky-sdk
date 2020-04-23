@@ -2,6 +2,7 @@
   // import "core-js/fn/array.find"
   // ...
 import WhiskyPerformance from './performance'
+import WhiskyGlobalError from './error'
 
 interface IWhiskyConfig {
   perfermance: true,
@@ -13,6 +14,7 @@ interface IWhiskyConfig {
 
 class WhiskySDK {
   config: IWhiskyConfig;
+  static sendMessage: () => void;
 
   static singleton(options: IWhiskyConfig = {perfermance: true, jsError: true, api: true, url: ''}) {
     window['ws'] = new WhiskySDK(options)
@@ -27,12 +29,21 @@ class WhiskySDK {
     }
     // 监听JsError
     if (this.config.jsError) {
+      const error = new WhiskyGlobalError()
+      error.active()
     }
 
     // 监听pv,uv
 
     // 监听资源
   }
+
+  sendMessage () {
+    console.log('sendMessage')
+  }
 }
 
+WhiskySDK.sendMessage = function () {
+  console.log('sendMessage')
+}
 export default WhiskySDK

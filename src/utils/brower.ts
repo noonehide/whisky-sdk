@@ -51,13 +51,8 @@ export function on<K extends keyof WindowEventMap>(target: Window, type: K, call
   }
 }
 
-
 /**
  * 事件解绑
- * @param  {DOM}   target
- * @param  {String}   type
- * @param  {Function} callback
- * @return {Object} this
  */
 
 export function off<K extends keyof WindowEventMap>(target: Window, type: K, callback: (this: Window, ev: WindowEventMap[K]) => any, options?: boolean | EventListenerOptions): void {

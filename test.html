@@ -1,26 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script src="./dist/whisky-sdk.umd.js">
   </script>
- <script>
-  window.whiskySdk.singleton()
- </script>
+  <script>
+    window.whiskySdk.singleton()
+  </script>
 </head>
-<body>
 
+<body>
+  <div class="operation">
+    <div>
+      <input type="radio" name="framework" id="Vanilla" value="Vanilla" checked />
+      <label for="Vanilla">Vanilla</label>
+
+      <input type="radio" name="framework" id="React" value="React" />
+      <label for="React">React</label>
+
+      <input type="radio" name="framework" id="Vue" value="Vue" />
+      <label for="Vue">Vue</label>
+    </div>
+    <div>
+      <input type="radio" name="mode" id="Hash" value="Hash" checked />
+      <label for="Hash">Hash</label>
+
+      <input type="radio" name="mode" id="History" value="History" />
+      <label for="History">History</label>
+    </div>
+    <div>
+      <a href="/">重置地址</a>
+    </div>
+  </div>
+
+  <div class="preview vanilla hash">
+    <h1>Hash Router(Vanilla)</h1>
+    <ul>
+      <li><a href="#/home">home</a></li>
+      <li><a href="#/about">about</a></li>
+    </ul>
+    <div class="container"></div>
+  </div>
+
+  <div class="preview vanilla history">
+    <h1>History Router(Vanilla)</h1>
+    <ul>
+      <li><a href="./home">home</a></li>
+      <li><a href="./about">about</a></li>
+    </ul>
+    <div class="container"></div>
+  </div>
 </body>
 <script>
-      new Promise(function(resolve, reject) {
-        reject(new Error('promise error'));
-      });
+      // new Promise(function(resolve, reject) {
+      //   reject(new Error('promise error'));
+      // });
 
-      let b = 'a'.size()
-      console.log('b')
-
-
+      // let b = 'a'.size()
+      // console.log('b')
 </script>
+
 </html>

@@ -64,9 +64,51 @@ export function off<K extends keyof WindowEventMap>(target: Window, type: K, cal
   }
 }
 
+export function isChromePackagedApp () {
+  return window.chrome && window.chrome.app && window.chrome.app.runtime;
+}
+
+
+export function hasPushAndReplaceState () {
+  return !isChromePackagedApp &&
+  window.history &&
+  window.history.pushState &&
+  window.history.replaceState;
+}
+
+
+
+// parseUrl
+export function parseUrl(url: string) {
+
+  let match = url.match(/^(([^:\/?#]+):)?(\/\/([^\/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?$/);
+  return {
+    protocol: match && match[2] ? match[2]: '',
+    host: match && match[4] ? match[4]: '',
+    relative: url // everything minus origin
+  };
+}
+
+export function emitEvent(name: string, payload?: any) {
+  let e:Event;
+  if (window.CustomEvent) {
+      e = new CustomEvent(name, {detail: payload});
+  } else {
+      e = document.createEvent('HTMLEvents');
+      e.initEvent(name, false, true);
+      e.detail = payload;
+  }
+  window.dispatchEvent(e);
+};
+
 export default {
-  on,
-  each,
   isSuportPerformance,
   isSuportPerformanceObserver,
+  each,
+  on,
+  off,
+  parseUrl,
+  hasPushAndReplaceState,
+  isChromePackagedApp,
+  emitEvent
 }

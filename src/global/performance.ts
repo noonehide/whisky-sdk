@@ -1,6 +1,9 @@
 
-import utils from './utils/brower'
+import utils from '../utils/brower'
 import each from 'lodash/each'
+import WhiskySDK from '../whisky-sdk';
+import {Type} from '../const'
+
 // performance 中的字段名
 // 用一个专门的数组缓存只是为了解决相同的长字符串使用次数过多，导致代码量过大的问题
 const TIMING_KEYS = [
@@ -28,7 +31,7 @@ export default class Performance {
   public active() {
     if (utils.isSuportPerformance()) {
       let perfData = this.getPerformanceData();
-      console.log('perfData', perfData)
+      WhiskySDK.sendMessage(Type.Performance, perfData)
     }
   }
 

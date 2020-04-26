@@ -1,15 +1,15 @@
 // Import here Polyfills if needed. Recommended core-js (npm i -D core-js)
 // import "core-js/fn/array.find"
-import WhiskyPerformance from './performance'
-import WhiskyGlobalError from './error'
-import WhiskyHistory from './history'
-
+import WhiskyPerformance from './global/performance'
+import WhiskyGlobalError from './global/error'
+import WhiskyHistory from './behavior/history'
+import WhiskyDom from './behavior/dom'
 
 class WhiskySDK {
-  config: IWhiskyConfig;
-  static sendMessage: () => void;
+  static config: IWhiskyConfig;
 
-  static singleton(options: IWhiskyConfig = { perfermance: true, jsError: true, api: true, url: '', enableSpa: true, navication: true }) {
+  static singleton(options: IWhiskyConfig = { perfermance: true, jsError: true, api: true, url: '', navication: true, dom: true }) {
+    WhiskySDK.config = options
     if (window['ws']) {
       return window['ws']
     } else {
@@ -19,40 +19,34 @@ class WhiskySDK {
     }
   }
 
-  constructor(options: IWhiskyConfig = { perfermance: true, jsError: true, api: true, url: '', enableSpa: true, navication: true }) {
-    this.config = Object.assign({}, options)
+  constructor(options: IWhiskyConfig = { perfermance: true, jsError: true, api: true, url: '', navication: true, dom: true }) {
     // 初始化的时候，立即发送性能数据
-    if (this.config.perfermance) {
+    if (WhiskySDK.config.perfermance) {
       const per = new WhiskyPerformance()
       per.active()
     }
 
     // 监听JsError
-    if (this.config.jsError) {
+    if (WhiskySDK.config.jsError) {
       const error = new WhiskyGlobalError()
       error.active()
     }
 
-    if (this.config.navication) {
+    // 监听路由
+    if (WhiskySDK.config.navication) {
       const hisotry = new WhiskyHistory()
       hisotry.active()
     }
 
-    // 监听pv,uv
-
-    // 监听资源
+    if (WhiskySDK.config.dom) {
+      const dom = new WhiskyDom()
+      dom.active()
+    }
   }
 
-  sendMessage() {
-    console.log('sendMessage')
+  static sendMessage(type: String, data: any) {
+    console.log(`sendMesage type=${type}  data=${JSON.stringify(data)}`)
   }
 
-  setOption(option: IWhiskyConfig) {
-
-  }
-}
-
-WhiskySDK.sendMessage = function () {
-  console.log('sendMessage')
 }
 export default WhiskySDK

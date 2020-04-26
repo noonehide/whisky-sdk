@@ -1,12 +1,16 @@
-import {parseUrl, emitEvent } from './utils/brower'
-
+import { parseUrl, emitEvent } from '../utils/brower'
+import WhiskySDK from '../whisky-sdk';
+import {Type}  from '../const'
 const _window = window
 const _location = _window.location
 
+/**
+ * 监听用户行为: 路由变化
+ */
 export default class History {
   _lastHref: string;
 
-  constructor () {
+  constructor() {
     this._lastHref = ''
   }
 
@@ -15,16 +19,17 @@ export default class History {
     emitEvent('replaceState')
     const _this = this
     // 首次加载需要手动触发
-    window.addEventListener('DOMContentLoaded', (event)=>{
+    window.addEventListener('DOMContentLoaded', (event) => {
       _this.onPopState(event)
     })
     //
-    window.addEventListener('popstate', (event)=>{
+    window.addEventListener('popstate', (event) => {
       _this.onPopState(event)
     })
-    window.addEventListener('pushState', (event)=>{
-      _this.onPopState(event)})
-    window.addEventListener('replaceState', (event)=>{
+    window.addEventListener('pushState', (event) => {
+      _this.onPopState(event)
+    })
+    window.addEventListener('replaceState', (event) => {
       _this.onPopState(event)
     })
   }
@@ -48,9 +53,11 @@ export default class History {
       from = parsedFrom.relative;
     }
 
-    if(to !== from ) {
-      console.log('navigation from    ' + from)
-      console.log('navigation to      ' + to)
+    if (to !== from) {
+      WhiskySDK.sendMessage(Type.Navigation, {
+        from,
+        to
+      })
     }
   }
 }

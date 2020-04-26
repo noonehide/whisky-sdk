@@ -26,6 +26,7 @@ class WhiskySDK {
       const per = new WhiskyPerformance()
       per.active()
     }
+
     // 监听JsError
     if (this.config.jsError) {
       const error = new WhiskyGlobalError()

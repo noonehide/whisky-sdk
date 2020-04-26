@@ -1,15 +1,15 @@
 {
   "name": "whisky-sdk",
-  "version": "0.0.0",
-  "description": "",
-  "keywords": [],
+  "version": "0.0.1",
+  "description": "前端浏览器性能数据，JsError，用户行为采集",
+  "keywords": ["typescript", "jsError", "performance", "pv/uv", "location", "behavior"],
   "main": "dist/whisky-sdk.umd.js",
   "module": "dist/whisky-sdk.es5.js",
   "typings": "dist/types/whisky-sdk.d.ts",
   "files": [
     "dist"
   ],
-  "author": "jianghui_0203 <jianghui_0203@youzan.com>",
+  "author": "noonehide <noonehide@163.com>",
   "repository": {
     "type": "git",
     "url": ""
@@ -29,10 +29,7 @@
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "commit": "git-cz",
-    "semantic-release": "semantic-release",
-    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
-    "precommit": "lint-staged",
-    "travis-deploy-once": "travis-deploy-once"
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [

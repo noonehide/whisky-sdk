@@ -17,7 +17,6 @@ export default class Dom {
 
   public active() {
     if (_document.addEventListener) {
-      console.log('addEventListener')
       _document.addEventListener('click', (event: Event) => {
         this._breadcrumbEventHandler(Type.DomClick, event)
       }, false);
@@ -41,7 +40,6 @@ export default class Dom {
       target = '<unknown>';
     }
     WhiskySDK.sendMessage(type, target)
-
   }
 
   public _keypressEventHandler(event: any) {

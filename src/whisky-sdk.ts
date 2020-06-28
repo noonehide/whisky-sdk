@@ -6,47 +6,38 @@ import WhiskyHistory from './behavior/history'
 import WhiskyDom from './behavior/dom'
 
 class WhiskySDK {
+
   static config: IWhiskyConfig;
 
-  static singleton(options: IWhiskyConfig = { perfermance: true, jsError: true, api: true, url: '', navication: true, dom: true }) {
+  static singleton(options: IWhiskyConfig = { perfermance: true, jsError: true, api: true, url: '', navication: true, dom: true, sample: 1, appId: '' }) {
     WhiskySDK.config = options
-    if (window['ws']) {
-      return window['ws']
-    } else {
-      let sdk = new WhiskySDK(options)
-      window['ws'] = sdk
-      return sdk
-    }
+    let sdk = new WhiskySDK(options)
+    window['ws'] = sdk
+    return sdk
   }
 
-  constructor(options: IWhiskyConfig = { perfermance: true, jsError: true, api: true, url: '', navication: true, dom: true }) {
+  constructor(options: IWhiskyConfig = { perfermance: true, jsError: true, api: true, url: '', navication: true, dom: true, sample: 1, appId: '' }) {
     // 初始化的时候，立即发送性能数据
     if (WhiskySDK.config.perfermance) {
-      const per = new WhiskyPerformance()
+      const per = new WhiskyPerformance(WhiskySDK.config)
       per.active()
     }
-
     // 监听JsError
     if (WhiskySDK.config.jsError) {
-      const error = new WhiskyGlobalError()
+      const error = new WhiskyGlobalError(WhiskySDK.config)
       error.active()
     }
-
     // 监听路由
     if (WhiskySDK.config.navication) {
-      const hisotry = new WhiskyHistory()
+      const hisotry = new WhiskyHistory(WhiskySDK.config)
       hisotry.active()
     }
 
+    // 监听dom操作
     if (WhiskySDK.config.dom) {
-      const dom = new WhiskyDom()
+      const dom = new WhiskyDom(WhiskySDK.config)
       dom.active()
     }
   }
-
-  static sendMessage(type: String, data: any) {
-    console.log(`sendMesage type=${type}  data=${JSON.stringify(data)}`)
-  }
-
 }
 export default WhiskySDK

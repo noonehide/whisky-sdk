@@ -1,6 +1,7 @@
-interface Window{
+interface Window {
   ws: any;
   chrome: any;
+  msCrypto?: Crypto;
   attachEvent<K extends keyof WindowEventMap>(type: string, listener: (this: Window, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
   detachEvent<K extends keyof WindowEventMap>(type: string, listener: (this: Window, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 }
@@ -17,12 +18,14 @@ interface Document {
 }
 
 interface IWhiskyConfig {
-  perfermance: true,
-  jsError: true,
-  api: true,
-  url: '',
-  navication: true,
-  dom: true
+  url: string,
+  appId: string,
+  api?: true,
+  perfermance?: true,
+  jsError?: true,
+  navication?: true,
+  dom?: true,
+  sample?: number,
 }
 
 

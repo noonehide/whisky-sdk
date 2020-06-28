@@ -1,8 +1,9 @@
 
+import Sender from '../sender'
+
 import utils from '../utils/brower'
 import each from 'lodash/each'
-import WhiskySDK from '../whisky-sdk';
-import {Type} from '../const'
+import { Type } from '../const'
 
 // performance 中的字段名
 // 用一个专门的数组缓存只是为了解决相同的长字符串使用次数过多，导致代码量过大的问题
@@ -28,10 +29,23 @@ const TIMING_KEYS = [
 ];
 
 export default class Performance {
+  options: IWhiskyConfig;
+  constructor(options: IWhiskyConfig) {
+    this.options = options
+  }
+
+
   public active() {
     if (utils.isSuportPerformance()) {
       let perfData = this.getPerformanceData();
-      WhiskySDK.sendMessage(Type.Performance, perfData)
+      Sender.getInstance().push(Type.Performance, {
+        event: {
+          type: Type.Performance,
+          url: window.location.href,
+          title: window.document.title,
+          params: perfData
+        }
+      }, this.options)
     }
   }
 
@@ -124,13 +138,13 @@ export default class Performance {
     let timing = window.performance.timing || {}
 
     each(datas, (value, key) => {
-      let beginTimeKey: keyof PerformanceTiming = TIMING_KEYS[value[1]] as any
-      let endTimeKey: keyof PerformanceTiming = TIMING_KEYS[value[0]] as any
+      let beginTimeKey: keyof PerformanceTiming = TIMING_KEYS[value[1]] as keyof PerformanceTiming
+      let endTimeKey: keyof PerformanceTiming = TIMING_KEYS[value[0]] as keyof PerformanceTiming
 
       let begin = timing[beginTimeKey] as number
       let end = timing[endTimeKey] as number
-      if (begin> 0 && end>0) {
-        const cost:number = Math.round(end - begin);
+      if (begin > 0 && end > 0) {
+        const cost: number = Math.round(end - begin);
         if (cost >= 0 && cost < 3600 * 1e3) {
           perfData[key] = cost;
         }

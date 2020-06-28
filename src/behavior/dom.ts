@@ -1,6 +1,6 @@
 import { Type } from '../const'
 import { htmlTreeAsString } from '../utils/brower'
-import WhiskySDK from '../whisky-sdk';
+import Sender from '../sender';
 const _document = document
 
 /**
@@ -9,8 +9,10 @@ const _document = document
 export default class Dom {
   _lastCapturedEvent: Event | null;
   _keypressTimeout: any;
+  options: IWhiskyConfig;
 
-  constructor() {
+  constructor(options: IWhiskyConfig) {
+    this.options = options
     this._lastCapturedEvent = null
     this._keypressTimeout = null
   }
@@ -35,22 +37,30 @@ export default class Dom {
     this._lastCapturedEvent = event;
     let target;
     try {
-      target = htmlTreeAsString(event.target);
+      target = htmlTreeAsString(event.target as (Node & ParentNode));
     } catch (e) {
       target = '<unknown>';
     }
-    WhiskySDK.sendMessage(type, target)
+    Sender.getInstance().push(type, {
+      event: {
+        type: type,
+        url: window.location.href,
+        title: window.document.title,
+        params: {
+          target
+        }
+      }
+    }, this.options)
   }
 
-  public _keypressEventHandler(event: any) {
+  public _keypressEventHandler(event: Event) {
     if (this._lastCapturedEvent === event) return;
     this._lastCapturedEvent = event;
 
     let target;
     let debounceDuration = 1000
-    debugger
     try {
-      target = event.target;
+      target = event.target as HTMLElement;
     } catch (e) {
       return;
     }

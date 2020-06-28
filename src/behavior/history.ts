@@ -1,6 +1,6 @@
 import { parseUrl, emitEvent } from '../utils/brower'
-import WhiskySDK from '../whisky-sdk';
-import {Type}  from '../const'
+import Sender from '../sender';
+import { Type } from '../const'
 const _window = window
 const _location = _window.location
 
@@ -10,8 +10,12 @@ const _location = _window.location
 export default class History {
   _lastHref: string;
 
-  constructor() {
+  options: IWhiskyConfig;
+
+  constructor(options: IWhiskyConfig) {
+    this.options = options
     this._lastHref = ''
+
   }
 
   public active() {
@@ -54,10 +58,17 @@ export default class History {
     }
 
     if (to !== from) {
-      WhiskySDK.sendMessage(Type.Navigation, {
-        from,
-        to
-      })
+      Sender.getInstance().push(Type.Navigation, {
+        event: {
+          type: Type.Navigation,
+          url: window.location.href,
+          title: window.document.title,
+          params: {
+            from,
+            to
+          }
+        }
+      }, this.options)
     }
   }
 }

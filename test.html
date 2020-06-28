@@ -8,7 +8,18 @@
   <script src="./dist/whisky-sdk.umd.js">
   </script>
   <script>
-    window.whiskySdk.singleton()
+    window.whiskySdk.singleton({
+      perfermance: true,
+      jsError: true,
+      api: true,
+      url: 'https://www.bigfe.info/',
+      navication: true,
+      dom: true,
+      sample: 1,
+      uuid: '1213',
+      appId: 'xxxxx',
+      project: 'aaa-xxx'
+    })
   </script>
 </head>
 
@@ -56,12 +67,12 @@
   </div>
 </body>
 <script>
-      // new Promise(function(resolve, reject) {
-      //   reject(new Error('promise error'));
-      // });
+  // new Promise(function (resolve, reject) {
+  //   reject(new Error('promise error'));
+  // });
 
-      // let b = 'a'.size()
-      // console.log('b')
+  let b = 'a'.size()
+  console.log('b')
 </script>
 
 </html>
